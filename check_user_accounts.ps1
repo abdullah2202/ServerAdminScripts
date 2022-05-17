@@ -7,6 +7,7 @@ Import-Module activedirectory
 $filename = "users_check.csv"
 
 $records = @(Get-Content $filename).Length
+$records--
 
 $Users = Import-csv $filename
 
