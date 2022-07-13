@@ -23,7 +23,7 @@ for term in terms:
         if term in file:
             count += 1
             filename = file.partition(".")
-            newfilename = term+"_"+str(count)+"."+filename[2]
+            newfilename = "{0}_{1}.{2}".format(term[:-1],str(count),filename[2])
             single_files.append(newfilename)
             shutil.copy(cctvdir+file,newpath+newfilename)
             add_line(ff_file,"file '"+newfilename+"'")
