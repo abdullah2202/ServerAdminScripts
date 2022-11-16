@@ -4,9 +4,9 @@
 
 Import-Module activedirectory
 
-$Users = Import-csv "G:\My Drive\2021-22\AD_PS\test.csv"
+$Users = Import-csv "users.csv"
 
-$Group = "Students"
+$Groups = "Students","KS1","DomainUsers"
 
 
 $total_new = 0
@@ -42,16 +42,18 @@ foreach ($User in $Users) {
             Enabled                    = $true
             ChangePasswordAtLogon      = $false
             CannotChangePassword       = $true
-            HomeDrive                  = "N:"
-            HomeDirectory              = "\\hmount-csvr1\Users\$Username"
+            HomeDrive                  = "H:"
+            HomeDirectory              = "\\CSVR\Users\$Username"
             PasswordNeverExpires       = $true
         }  
 
          New-ADUser @userProps
 
-         #Add to group
-         Add-ADGroupMember -Identity $Group -Members $Username
-
+         #Add to groups
+         foreach($Group in $Groups){
+            Add-ADGroupMember -Identity $Group -Members $Username
+         }
+         
          Write-Host "The user account $Username is created." -ForegroundColor Cyan
    
          $total_new++
@@ -60,4 +62,4 @@ foreach ($User in $Users) {
 }
 
 Write-Host "Total new accounts: $total_new"
-Write-Host "Total changed account: $total_changed"
+Write-Host "Total changed accounts: $total_changed"
